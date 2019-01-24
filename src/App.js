@@ -12,8 +12,8 @@ class App extends Component {
     this.onUpdateUser = this.onUpdateUser.bind(this);
   }
   
-  onUpdateUser() {
-    this.props.onUpdateUser('Sammy');
+  onUpdateUser(event) {
+    this.props.onUpdateUser(event.target.value);
   }
 
   render() {
@@ -21,7 +21,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <p onClick={this.onUpdateUser}>Update user</p>
+          <input onChange={this.onUpdateUser} />
           {this.props.user}
         </header>
       </div>
