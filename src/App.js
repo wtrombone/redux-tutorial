@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { updateUser, apiRequest } from './actions/user-actions';
 
+import { createSelector } from 'reselect';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -13,12 +15,6 @@ class App extends Component {
     this.onUpdateUser = this.onUpdateUser.bind(this);
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.props.onApiRequest();
-    }, 1500);  
-  }
-  
   onUpdateUser(event) {
     this.props.onUpdateUser(event.target.value);
   }
@@ -36,13 +32,14 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  return {
-    products: state.products,
-    user: state.user,
-    userPlusProp: `${state.user} ${props.aRandomProps}`
-  }  
-};
+const mapStateToProps = createSelector(
+  state => state.products,
+  state => state.user,
+  (products, user) => ({
+    products,
+    user
+  })
+);;
 
 const mapActionsToProps = {
   onUpdateUser: updateUser,
