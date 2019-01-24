@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { updateUser } from './actions/user-actions';
 
@@ -17,8 +18,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props)
-
     return (
       <div className="App">
         <header className="App-header">
@@ -39,8 +38,18 @@ const mapStateToProps = (state, props) => {
   }  
 };
 
-const mapActionsToProps = {
-  onUpdateUser: updateUser
+const mapActionsToProps = (dispatch, props) => {
+  console.log(props)
+  
+  return bindActionCreators({
+    onUpdateUser: updateUser
+  }, dispatch);  
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(App);
+const mergeProps = (propsFromState, propsFromDispatch, ownProps) => {
+  console.log(propsFromState, propsFromDispatch, ownProps);
+  
+  return {};
+}
+
+export default connect(mapStateToProps, mapActionsToProps, mergeProps)(App);
