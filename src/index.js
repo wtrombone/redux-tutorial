@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { applyMiddleware, compose, combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import productsReducer from './reducers/products-reducer'
 import userReducer from './reducers/user-reducer'
@@ -14,12 +15,17 @@ const allReducers = combineReducers({
     user: userReducer
 });
 
+const allStoreEnhancers = compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 const store = createStore(
     allReducers, {
         products: [{ name: 'iPhone' }],
         user: 'Michael'
     },
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    allStoreEnhancers
 );
 
 ReactDOM.render(<Provider store={store}><App aRandomProps="whatever" /></Provider>, document.getElementById('root'));
